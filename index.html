@@ -260,7 +260,7 @@
                 const name = item.name || item.title;
                 const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
                 const color = stringToColor(name).substring(1);
-                const placeholderImgUrl = `https://placehold.co/600x400/${color}/FFFFFF?text=${encodeURIComponent(name.charAt(0))}&font=raleway`;
+                const placeholderImgUrl = `https://placehold.co/600x400/${color}/FFFFFF?text=${encodeURIComponent((name || '?').charAt(0))}&font=raleway`;
                 const card = document.createElement('div');
                 card.className = 'result-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col fade-in';
                 card.style.animationDelay = `${index * 50}ms`;
