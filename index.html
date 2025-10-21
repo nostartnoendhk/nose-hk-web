@@ -314,31 +314,70 @@
                 resultsGrid.appendChild(card);
             });
         }
-        
+        function generateEventDetailsHtml(item) {
+            // 如果不是 Event，就返回空字串
+            if (!('title' in item)) return '';
+
+            // --- 處理日期 ---
+            let dateHtml = '';
+            if (item.start_date) {
+                let dateText = item.start_date;
+                if (item.end_date && item.end_date !== item.start_date) {
+                    dateText += ` - ${item.end_date}`;
+                }
+                dateHtml = `
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c0-.414.336-.75.75-.75h10.5a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>
+                        <span>${dateText}</span>
+                    </div>
+                `;
+            }
+
+            // --- 處理時間 (只在 start_time 存在時顯示) ---
+            let timeHtml = '';
+            if (item.start_time) {
+                let timeText = item.start_time;
+                if (item.end_time) {
+                    timeText += ` - ${item.end_time}`;
+                }
+                timeHtml = `
+                    <div class="flex items-center gap-2 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg>
+                        <span>${timeText}</span>
+                    </div>
+                `;
+            }
+
+            // --- 組合最終結果 ---
+            if (!dateHtml && !timeHtml) return ''; // 如果日期和時間都沒有，返回空
+            return `<div class="mt-2 text-sm text-blue-600 font-semibold">${dateHtml}${timeHtml}</div>`;
+        }
         function openModal(item) {
-            const isEvent = 'title' in item;
-            const name = item.name || item.title;
-            const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
-            const color = stringToColor(name).substring(1);
-            const placeholderImgUrl = `https://placehold.co/800x400/${color}/FFFFFF?text=${encodeURIComponent(name)}&font=raleway`;
-            modalContent.innerHTML = `
-                <div class="relative">
-                    <button id="modal-close-btn" class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors z-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" /></svg>
-                    </button>
-                    <div class="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4"><img src="${placeholderImgUrl}" alt="${name}" class="w-full h-full object-cover"></div>
-                    <h3 class="font-bold text-xl sm:text-2xl">${name}</h3>
-                    <p class="text-gray-500 mt-1">${item.address || item.district}</p>
-                    ${isEvent ? `<p class="text-sm text-blue-600 font-semibold mt-2">${item.start_date}${item.end_date && item.end_date !== item.start_date ? ' - ' + item.end_date : ''}</p>` : ''}
-                    <div class="mt-4 pt-4 border-t flex flex-wrap gap-2">${senses.map(s => `<span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">${s}</span>`).join('')}</div>
-                    <p class="text-gray-600 mt-4">${item.description || '暫無描述。'}</p>
-                    <div class="mt-6"><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-gray-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors">${isEvent ? '前往活動網站' : '前往小店網站'}</a></div>
-                </div>
-            `;
-            modalBackdrop.classList.remove('hidden');
-            setTimeout(() => modalBackdrop.classList.remove('modal-enter'), 10);
-            document.getElementById('modal-close-btn').addEventListener('click', closeModal);
-        }
+            const name = item.name || item.title;
+            const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
+            const color = stringToColor(name).substring(1);
+            const placeholderImgUrl = `https://placehold.co/800x400/${color}/FFFFFF?text=${encodeURIComponent(name)}&font=raleway`;
+            
+            // 呼叫新的輔助函式來產生日期和時間的 HTML
+            const eventDetails = generateEventDetailsHtml(item);
+
+            modalContent.innerHTML = `
+                <div class="relative">
+                    <button id="modal-close-btn" class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" /></svg>
+                    </button>
+                    <div class="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4"><img src="${placeholderImgUrl}" alt="${name}" class="w-full h-full object-cover"></div>
+                    <h3 class="font-bold text-xl sm:text-2xl">${name}</h3>
+                    <p class="text-gray-500 mt-1">${item.address || item.district}</p>
+                    ${eventDetails}                     <div class="mt-4 pt-4 border-t flex flex-wrap gap-2">${senses.map(s => `<span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">${s}</span>`).join('')}</div>
+                    <p class="text-gray-600 mt-4">${item.description || '暫無描述。'}</p>
+                    <div class="mt-6"><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-gray-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors">${'title' in item ? '前往活動網站' : '前往小店網站'}</a></div>
+                </div>
+            `;
+            modalBackdrop.classList.remove('hidden');
+            setTimeout(() => modalBackdrop.classList.remove('modal-enter'), 10);
+            document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+        }
 
         function closeModal() {
             modalBackdrop.classList.add('modal-enter');
