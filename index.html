@@ -54,12 +54,12 @@
                 </div>
 
 				<div class="flex items-center gap-2 text-sm font-medium">
-                <a href="https://forms.gle/n4Z4Wd1f6MJ3yVGq8" target="_blank" class="py-2 px-4 rounded-md hover:bg-gray-100 transition-colors">
-                    小店/活動登記
-                </a>
-                <!-- Auth Section -->
-                <div id="auth-container" class="flex items-center gap-2 text-sm font-medium">
-                    <!-- This will be populated by the auth script -->
+                    <a href="https://forms.gle/n4Z4Wd1f6MJ3yVGq8" target="_blank" class="py-2 px-4 rounded-md hover:bg-gray-100 transition-colors">
+                        小店/活動登記
+                    </a>
+                    <!-- Auth Section -->
+                    <div id="auth-container" class="flex items-center gap-2 text-sm font-medium">
+                        <!-- This will be populated by the auth script -->
 					</div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-      
+    
         // =================================================================================
         // 【非常重要】請將你在 Firebase 控制台中複製的設定貼到這裡
         // =================================================================================
@@ -239,11 +239,20 @@
             if (currentFilter === 'all' || currentFilter === 'events') results.push(...allEvents);
 
             const filtered = results.filter(item => {
+                const name = item.name || item.title;
+
+                // 如果項目沒有 name 或 title，就直接過濾掉
+                if (!name) {
+                    return false;
+                }
+                
                 const districtMatch = selectedDistrict === 'all' || item.district === selectedDistrict;
                 const senses = item.senses || item.selected_senses || '';
                 const sensesMatch = selectedSenses.length === 0 || selectedSenses.every(s => senses.includes(s));
-                const name = item.name || item.title || '';
+                
+                // 因為我們已經確保 name 存在，所以這裡使用 .toLowerCase() 是安全的
                 const searchMatch = searchQuery === '' || name.toLowerCase().includes(searchQuery);
+                
                 return districtMatch && sensesMatch && searchMatch;
             });
             renderResults(filtered);
@@ -257,10 +266,10 @@
 
             results.forEach((item, index) => {
                 const isEvent = 'title' in item;
-                const name = item.name || item.title;
+                const name = item.name || item.title; // We know this exists from the filter
                 const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
                 const color = stringToColor(name).substring(1);
-                const placeholderImgUrl = `https://placehold.co/600x400/${color}/FFFFFF?text=${encodeURIComponent((name || '?').charAt(0))}&font=raleway`;
+                const placeholderImgUrl = `https://placehold.co/600x400/${color}/FFFFFF?text=${encodeURIComponent(name.charAt(0))}&font=raleway`;
                 const card = document.createElement('div');
                 card.className = 'result-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col fade-in';
                 card.style.animationDelay = `${index * 50}ms`;
