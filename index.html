@@ -230,33 +230,60 @@
         }
 
         function performSearch() {
-            const selectedSenses = Array.from(sensesContainer.querySelectorAll('.sense-btn.active')).map(btn => btn.dataset.sense);
-            const selectedDistrict = districtSelect.value;
-            const searchQuery = searchInput.value.toLowerCase();
+            const selectedSenses = Array.from(sensesContainer.querySelectorAll('.sense-btn.active')).map(btn => btn.dataset.sense);
+            const selectedDistrict = districtSelect.value;
+            const searchQuery = searchInput.value.toLowerCase();
 
-            let results = [];
-            if (currentFilter === 'all' || currentFilter === 'places') results.push(...allPlaces);
-            if (currentFilter === 'all' || currentFilter === 'events') results.push(...allEvents);
+            let results = [];
+            if (currentFilter === 'all' || currentFilter === 'places') results.push(...allPlaces);
+            if (currentFilter === 'all' || currentFilter === 'events') results.push(...allEvents);
 
-            const filtered = results.filter(item => {
-                const name = item.name || item.title;
+            const filtered = results.filter(item => {
+                const name = item.name || item.title;
 
-                // 如果項目沒有 name 或 title，就直接過濾掉
-                if (!name) {
-                    return false;
+                // 如果項目沒有 name 或 title，就直接過濾掉
+                if (!name) {
+                    return false;
+                }
+                
+                const districtMatch = selectedDistrict === 'all' || item.district === selectedDistrict;
+                const senses = item.senses || item.selected_senses || '';
+                const sensesMatch = selectedSenses.length === 0 || selectedSenses.every(s => senses.includes(s));
+                
+                // 因為我們已經確保 name 存在，所以這裡使用 .toLowerCase() 是安全的
+                const searchMatch = searchQuery === '' || name.toLowerCase().includes(searchQuery);
+
+                // ==========================================================
+                //  ▼▼▼ 新增的日期過濾邏輯 ▼▼▼
+                // ==========================================================
+                let dateMatch = true; // 預設為 true，即顯示此項目
+                const isEvent = 'title' in item;
+
+                // 只對「活動」並且有「結束日期」的項目進行檢查
+                if (isEvent && item.end_date) {
+                    const today = new Date();
+                    // 將今天的時間設定為 00:00:00，以確保日期比較是公平的
+                    today.setHours(0, 0, 0, 0); 
+
+                    // 將活動的結束日期字串 (例如 "2025-10-20") 轉換為 Date 物件
+                    // 我們手動解析 YYYY-MM-DD，以避免時區問題
+                    const [year, month, day] = item.end_date.split('-').map(Number);
+                    const eventEndDate = new Date(year, month - 1, day);
+
+                    // 如果活動結束日期早於今天，則不匹配
+                    if (eventEndDate < today) {
+                        dateMatch = false;
+                    }
                 }
-                
-                const districtMatch = selectedDistrict === 'all' || item.district === selectedDistrict;
-                const senses = item.senses || item.selected_senses || '';
-                const sensesMatch = selectedSenses.length === 0 || selectedSenses.every(s => senses.includes(s));
-                
-                // 因為我們已經確保 name 存在，所以這裡使用 .toLowerCase() 是安全的
-                const searchMatch = searchQuery === '' || name.toLowerCase().includes(searchQuery);
-                
-                return districtMatch && sensesMatch && searchMatch;
-            });
-            renderResults(filtered);
-        }
+                // ==========================================================
+                //  ▲▲▲ 新增的日期過濾邏輯 ▲▲▲
+                // ==========================================================
+                
+                // 在最終的 return 中加入 dateMatch 條件
+                return districtMatch && sensesMatch && searchMatch && dateMatch;
+            });
+            renderResults(filtered);
+        }
 
         function renderResults(results) {
             resultsGrid.innerHTML = '';
