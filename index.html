@@ -37,11 +37,6 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Style for language switcher */
-        #lang-switcher a.active {
-            font-weight: 700;
-            color: #111827;
-        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -53,19 +48,13 @@
                 <div class="flex items-center gap-3">
                     <img src="public/icon.png" alt="logo" class="h-8 w-8">
                     <div>
-                        <h1 class="text-lg font-bold">NOSE (HK)</h1>
-                        <p class="text-xs text-gray-500" data-lang-key="brand_subtitle">Sensory Discovery</p>
+                        <h1 class="text-lg font-bold">nose.h.k</h1>
+                        <p class="text-xs text-gray-500">sensory discovery — events & local shops</p>
                     </div>
                 </div>
 
-				<div class="flex items-center gap-4 text-sm font-medium">
-                    <!-- Language Switcher -->
-                    <div id="lang-switcher" class="text-gray-500">
-                        <a href="#" data-lang="zh" class="">中</a>
-                        <span class="mx-1 text-gray-300">|</span>
-                        <a href="#" data-lang="en" class="active">EN</a>
-                    </div>
-                    <a href="https://forms.gle/n4Z4Wd1f6MJ3yVGq8" target="_blank" class="hidden sm:block py-2 px-4 rounded-md hover:bg-gray-100 transition-colors" data-lang-key="submit_button">
+				<div class="flex items-center gap-2 text-sm font-medium">
+                    <a href="https://forms.gle/n4Z4Wd1f6MJ3yVGq8" target="_blank" class="py-2 px-4 rounded-md hover:bg-gray-100 transition-colors">
                         小店/活動登記
                     </a>
                     <!-- Auth Section -->
@@ -79,16 +68,17 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Search and Results sections remain the same -->
         <section id="filters" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-8">
-            <h2 class="text-xl font-bold mb-1" data-lang-key="discover_title">Discover by senses —</h2>
-            <p class="text-gray-500 mb-4" data-lang-key="discover_subtitle">Pick one or more senses and explore Events & Local Shops curated for you.</p>
+            <h2 class="text-xl font-bold mb-1">Discover by senses —</h2>
+            <p class="text-gray-500 mb-4">Pick one or more senses and explore Events & Local Shops curated for you.</p>
             <div class="flex flex-col sm:flex-row gap-2">
                 <div id="senses-container" class="flex flex-wrap gap-2 items-center"></div>
                 <div class="flex-grow flex flex-col sm:flex-row gap-2 mt-2 sm:mt-0">
                     <select id="district-select" class="w-full sm:w-40 p-2 border border-gray-300 rounded-md bg-gray-50 focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none">
-                        <option value="all" data-lang-key="all_districts">所有地區</option>
+                        <option value="all">所有地區</option>
                     </select>
-                    <input type="text" id="search-input" placeholder="搜尋活動或小店..." data-lang-key="search_placeholder" class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none">
+                    <input type="text" id="search-input" placeholder="搜尋活動或小店..." class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none">
                 </div>
             </div>
         </section>
@@ -96,25 +86,20 @@
         <section id="results-container">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-2 text-sm font-medium">
-                    <button data-filter="all" class="filter-btn active py-2 px-4 rounded-md bg-gray-200" data-lang-key="filter_all">全部</button>
-                    <button data-filter="events" class="filter-btn py-2 px-4 rounded-md hover:bg-gray-200" data-lang-key="filter_events">活動</button>
-                    <button data-filter="places" class="filter-btn py-2 px-4 rounded-md hover:bg-gray-200" data-lang-key="filter_places">本地小店</button>
+                    <button data-filter="all" class="filter-btn active py-2 px-4 rounded-md bg-gray-200">全部</button>
+                    <button data-filter="events" class="filter-btn py-2 px-4 rounded-md hover:bg-gray-200">活動</button>
+                    <button data-filter="places" class="filter-btn py-2 px-4 rounded-md hover:bg-gray-200">本地小店</button>
                 </div>
                 <p id="results-count" class="text-sm text-gray-500"></p>
             </div>
-            <div id="loader" class="text-center py-10"><p class="text-gray-500" data-lang-key="loading">正在加載體驗...</p></div>
+            <div id="loader" class="text-center py-10"><p class="text-gray-500">正在加載體驗...</p></div>
             <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             <div id="no-results" class="hidden text-center py-16">
-                <p class="text-lg text-gray-600" data-lang-key="no_results">找不到任何體驗。</p>
-                <p class="text-gray-500" data-lang-key="no_results_desc">請嘗試調整你的篩選條件。</p>
+                <p class="text-lg text-gray-600">找不到任何體驗。</p>
+                <p class="text-gray-500">請嘗試調整你的篩選條件。</p>
             </div>
         </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="text-center py-8 mt-8 border-t border-gray-200">
-        <p class="text-sm text-gray-500" data-lang-key="copyright">版權所有 © 2025 nostartnoend.hk</p>
-    </footer>
 
     <!-- Modal -->
     <div id="modal-backdrop" class="fixed inset-0 bg-black bg-opacity-50 hidden z-30 modal-enter">
@@ -127,80 +112,33 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     
-        const firebaseConfig = {
-            apiKey: "AIzaSyA4REPPkvavljPA_MD135X6n0D9h2M59dE",
-            authDomain: "nosehk-46e0d.firebaseapp.com",
-            projectId: "nosehk-46e0d",
-            storageBucket: "nosehk-46e0d.appspot.com",
-            messagingSenderId: "1062820436301",
-            appId: "1:1062820436301:web:d96b78c57d363ddfff7f04",
-            measurementId: "G-XH1GLTDT9G"
-        };
+        // =================================================================================
+        // 【非常重要】請將你在 Firebase 控制台中複製的設定貼到這裡
+        // =================================================================================
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+		const firebaseConfig = {
+		  apiKey: "AIzaSyA4REPPkvavljPA_MD135X6n0D9h2M59dE",
+		  authDomain: "nosehk-46e0d.firebaseapp.com",
+		  projectId: "nosehk-46e0d",
+		  storageBucket: "nosehk-46e0d.firebasestorage.app",
+		  messagingSenderId: "1062820436301",
+		  appId: "1:1062820436301:web:d96b78c57d363ddfff7f04",
+		  measurementId: "G-XH1GLTDT9G"
+		};
+        // =================================================================================
         
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // The rest of the script remains the same as the previous version...
         const SENSES = ['Eye', 'Ear', 'Nose', 'Tongue', 'Body', 'Mind'];
         const SENSES_ZH = ['眼', '耳', '鼻', '舌', '身', '意'];
 
         let allPlaces = [];
         let allEvents = [];
         let currentFilter = 'all';
-        let currentLanguage = 'zh'; // Default to Chinese
-
-        const translations = {
-            en: {
-                brand_subtitle: "sensory discovery — events & local shops",
-                submit_button: "Submit Info",
-                discover_title: "Discover by senses —",
-                discover_subtitle: "Pick one or more senses and explore Events & Local Shops curated for you.",
-                all_districts: "All Districts",
-                search_placeholder: "Search events or shops...",
-                filter_all: "All",
-                filter_events: "Events",
-                filter_places: "Local Shops",
-                loading: "Loading experiences...",
-                no_results: "No experiences found.",
-                no_results_desc: "Please try adjusting your filters.",
-                showing_results: "Showing {count} results",
-                login_button: "Login",
-                logout_button: "Logout",
-                copyright: "Copyright © 2025 nostartnoend.hk",
-                card_place: "Place",
-                card_event: "Event",
-                card_view_place: "View Place",
-                card_view_event: "View Event",
-                modal_no_desc: "No description available.",
-                modal_go_place: "Go to Place Website",
-                modal_go_event: "Go to Event Website",
-            },
-            zh: {
-                brand_subtitle: "感官探索 — 活動與本地小店",
-                submit_button: "小店/活動登記",
-                discover_title: "透過感官發現 —",
-                discover_subtitle: "選擇一種或多種感官，探索為您策劃的活動與本地小店。",
-                all_districts: "所有地區",
-                search_placeholder: "搜尋活動或小店...",
-                filter_all: "全部",
-                filter_events: "活動",
-                filter_places: "本地小店",
-                loading: "正在加載體驗...",
-                no_results: "找不到任何體驗。",
-                no_results_desc: "請嘗試調整你的篩選條件。",
-                showing_results: "顯示 {count} 個結果",
-                login_button: "登入",
-                logout_button: "登出",
-                copyright: "版權所有 © 2025 nostartnoend.hk",
-                card_place: "地點",
-                card_event: "活動",
-                card_view_place: "查看小店",
-                card_view_event: "查看活動",
-                modal_no_desc: "暫無描述。",
-                modal_go_place: "前往小店網站",
-                modal_go_event: "前往活動網站",
-            }
-        };
 
         const authContainer = document.getElementById('auth-container');
         const sensesContainer = document.getElementById('senses-container');
@@ -213,32 +151,6 @@
         const resultFilterButtons = document.querySelectorAll('.filter-btn');
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
-        const langSwitcher = document.getElementById('lang-switcher');
-
-        function switchLanguage(lang) {
-            if (lang === currentLanguage) return;
-            currentLanguage = lang;
-            
-            document.querySelectorAll('[data-lang-key]').forEach(el => {
-                const key = el.dataset.langKey;
-                if (translations[currentLanguage][key]) {
-                    el.textContent = translations[currentLanguage][key];
-                }
-            });
-            
-            // Handle placeholder separately
-            const placeholderKey = searchInput.dataset.langKey;
-            if (translations[currentLanguage][placeholderKey]) {
-                searchInput.placeholder = translations[currentLanguage][placeholderKey];
-            }
-
-            // Update switcher active state
-            langSwitcher.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-            langSwitcher.querySelector(`a[data-lang="${lang}"]`).classList.add('active');
-
-            populateSenses();
-            performSearch(); // Re-render everything with new language
-        }
 
         // --- AUTHENTICATION ---
         const provider = new GoogleAuthProvider();
@@ -256,16 +168,16 @@
             if (user) {
                 authContainer.innerHTML = `
                     <img src="${user.photoURL}" alt="${user.displayName}" class="w-8 h-8 rounded-full">
-                    <button id="logout-btn" class="py-2 px-4 rounded-md hover:bg-gray-100 transition-colors" data-lang-key="logout_button">${translations[currentLanguage].logout_button}</button>
+                    <button id="logout-btn" class="py-2 px-4 rounded-md hover:bg-gray-100 transition-colors">登出</button>
                 `;
                 document.getElementById('logout-btn').addEventListener('click', handleSignOut);
             } else {
-                authContainer.innerHTML = `<button id="login-btn" class="bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors" data-lang-key="login_button">${translations[currentLanguage].login_button}</button>`;
+                authContainer.innerHTML = `<button id="login-btn" class="bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-colors">使用 Google 登入</button>`;
                 document.getElementById('login-btn').addEventListener('click', handleSignIn);
             }
         });
 
-        // --- DATA FETCHING & RENDERING ---
+        // --- DATA FETCHING ---
         function fetchData() {
             loader.style.display = 'block';
             const handleSnapshot = (snapshot, type) => {
@@ -299,57 +211,89 @@
         }
         
         function populateSenses() {
-            const sensesList = currentLanguage === 'en' ? SENSES : SENSES_ZH;
             sensesContainer.innerHTML = SENSES.map((sense, index) => 
-                `<button data-sense="${sense}" class="sense-btn border border-gray-300 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">${sensesList[index]}</button>`
+                `<button data-sense="${sense}" class="sense-btn border border-gray-300 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors">${SENSES_ZH[index]}</button>`
             ).join('');
+            sensesContainer.addEventListener('click', e => {
+                if (e.target.classList.contains('sense-btn')) {
+                    e.target.classList.toggle('active');
+                    performSearch();
+                }
+            });
         }
 
         function populateDistricts() {
             const currentSelection = districtSelect.value;
             const districts = [...new Set([...allPlaces.map(p => p.district), ...allEvents.map(e => e.district)])].filter(Boolean).sort();
-            const allDistrictsText = translations[currentLanguage].all_districts;
-            districtSelect.innerHTML = `<option value="all">${allDistrictsText}</option>` + districts.map(d => `<option value="${d}">${d}</option>`).join('');
+            districtSelect.innerHTML = `<option value="all">所有地區</option>` + districts.map(d => `<option value="${d}">${d}</option>`).join('');
             districtSelect.value = currentSelection;
         }
 
         function performSearch() {
-            const selectedSenses = Array.from(sensesContainer.querySelectorAll('.sense-btn.active')).map(btn => btn.dataset.sense);
-            const selectedDistrict = districtSelect.value;
-            const searchQuery = searchInput.value.toLowerCase();
+            const selectedSenses = Array.from(sensesContainer.querySelectorAll('.sense-btn.active')).map(btn => btn.dataset.sense);
+            const selectedDistrict = districtSelect.value;
+            const searchQuery = searchInput.value.toLowerCase();
 
-            let results = [];
-            if (currentFilter === 'all' || currentFilter === 'places') results.push(...allPlaces);
-            if (currentFilter === 'all' || currentFilter === 'events') results.push(...allEvents);
+            let results = [];
+            if (currentFilter === 'all' || currentFilter === 'places') results.push(...allPlaces);
+            if (currentFilter === 'all' || currentFilter === 'events') results.push(...allEvents);
 
-            const filtered = results.filter(item => {
-                const name = item.name || item.title;
-                if (!name) return false;
-                
-                const districtMatch = selectedDistrict === 'all' || item.district === selectedDistrict;
-                const senses = item.senses || item.selected_senses || '';
-                const sensesMatch = selectedSenses.length === 0 || selectedSenses.every(s => senses.includes(s));
-                const searchMatch = searchQuery === '' || name.toLowerCase().includes(searchQuery);
-                return districtMatch && sensesMatch && searchMatch;
-            });
-            renderResults(filtered);
-        }
+            const filtered = results.filter(item => {
+                const name = item.name || item.title;
+
+                // 如果項目沒有 name 或 title，就直接過濾掉
+                if (!name) {
+                    return false;
+                }
+                
+                const districtMatch = selectedDistrict === 'all' || item.district === selectedDistrict;
+                const senses = item.senses || item.selected_senses || '';
+                const sensesMatch = selectedSenses.length === 0 || selectedSenses.every(s => senses.includes(s));
+                
+                // 因為我們已經確保 name 存在，所以這裡使用 .toLowerCase() 是安全的
+                const searchMatch = searchQuery === '' || name.toLowerCase().includes(searchQuery);
+
+                // ==========================================================
+                //  ▼▼▼ 新增的日期過濾邏輯 ▼▼▼
+                // ==========================================================
+                let dateMatch = true; // 預設為 true，即顯示此項目
+                const isEvent = 'title' in item;
+
+                // 只對「活動」並且有「結束日期」的項目進行檢查
+                if (isEvent && item.end_date) {
+                    const today = new Date();
+                    // 將今天的時間設定為 00:00:00，以確保日期比較是公平的
+                    today.setHours(0, 0, 0, 0); 
+
+                    // 將活動的結束日期字串 (例如 "2025-10-20") 轉換為 Date 物件
+                    // 我們手動解析 YYYY-MM-DD，以避免時區問題
+                    const [year, month, day] = item.end_date.split('-').map(Number);
+                    const eventEndDate = new Date(year, month - 1, day);
+
+                    // 如果活動結束日期早於今天，則不匹配
+                    if (eventEndDate < today) {
+                        dateMatch = false;
+                    }
+                }
+                // ==========================================================
+                //  ▲▲▲ 新增的日期過濾邏輯 ▲▲▲
+                // ==========================================================
+                
+                // 在最終的 return 中加入 dateMatch 條件
+                return districtMatch && sensesMatch && searchMatch && dateMatch;
+            });
+            renderResults(filtered);
+        }
 
         function renderResults(results) {
-            results.sort((a, b) => {
-                const dateA = a.created_at ? new Date(a.created_at) : 0;
-                const dateB = b.created_at ? new Date(b.created_at) : 0;
-                return dateB - dateA;
-            });
-
             resultsGrid.innerHTML = '';
-            resultsCount.textContent = translations[currentLanguage].showing_results.replace('{count}', results.length);
+            resultsCount.textContent = `顯示 ${results.length} 個結果`;
             loader.style.display = 'none';
             noResults.style.display = results.length === 0 ? 'block' : 'none';
 
             results.forEach((item, index) => {
                 const isEvent = 'title' in item;
-                const name = item.name || item.title;
+                const name = item.name || item.title; // We know this exists from the filter
                 const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
                 const color = stringToColor(name).substring(1);
                 const placeholderImgUrl = `https://placehold.co/600x400/${color}/FFFFFF?text=${encodeURIComponent(name.charAt(0))}&font=raleway`;
@@ -359,11 +303,11 @@
                 card.innerHTML = `
                     <div class="aspect-video bg-gray-100"><img src="${placeholderImgUrl}" alt="${name}" class="w-full h-full object-cover"></div>
                     <div class="p-4 flex flex-col flex-grow">
-                        <p class="text-xs font-semibold text-gray-500">${item.category || (isEvent ? translations[currentLanguage].card_event : translations[currentLanguage].card_place)}</p>
+                        <p class="text-xs font-semibold text-gray-500">${item.category || (isEvent ? '活動' : '地點')}</p>
                         <h3 class="font-bold text-lg mt-1">${name}</h3>
                         <p class="text-sm text-gray-500">${item.address || item.district}</p>
                         <div class="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-1.5">${senses.map(s => `<span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">${s}</span>`).join('')}</div>
-                        <div class="mt-auto pt-4"><button class="view-details-btn w-full bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors">${isEvent ? translations[currentLanguage].card_view_event : translations[currentLanguage].card_view_place}</button></div>
+                        <div class="mt-auto pt-4"><button class="view-details-btn w-full bg-gray-100 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors">${isEvent ? '查看活動' : '查看小店'}</button></div>
                     </div>
                 `;
                 card.querySelector('.view-details-btn').addEventListener('click', () => openModal(item));
@@ -371,29 +315,12 @@
             });
         }
         
-        function generateEventDetailsHtml(item) {
-            if (!('title' in item)) return '';
-            let dateHtml = '', timeHtml = '';
-            if (item.start_date) {
-                let dateText = item.start_date + (item.end_date && item.end_date !== item.start_date ? ` - ${item.end_date}` : '');
-                dateHtml = `<div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500"><path fill-rule="evenodd" d="M5.75 2a.75.75 0 01.75.75V4h7V2.75a.75.75 0 011.5 0V4h.25A2.75 2.75 0 0118 6.75v8.5A2.75 2.75 0 0115.25 18H4.75A2.75 2.75 0 012 15.25v-8.5A2.75 2.75 0 014.75 4H5V2.75A.75.75 0 015.75 2zm-1 5.5c0-.414.336-.75.75-.75h10.5a.75.75 0 010 1.5H5.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg><span class="text-gray-700">${dateText}</span></div>`;
-            }
-            if (item.start_time) {
-                let timeText = item.start_time + (item.end_time ? ` - ${item.end_time}` : '');
-                timeHtml = `<div class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-13a.75.75 0 00-1.5 0v5c0 .414.336.75.75.75h4a.75.75 0 000-1.5h-3.25V5z" clip-rule="evenodd" /></svg><span class="text-gray-700">${timeText}</span></div>`;
-            }
-            if (!dateHtml && !timeHtml) return '';
-            return `<div class="mt-3 flex flex-col gap-2 text-sm">${dateHtml}${timeHtml}</div>`;
-        }
-
         function openModal(item) {
             const isEvent = 'title' in item;
             const name = item.name || item.title;
             const senses = (item.senses || item.selected_senses || '').split(',').map(s => s.trim()).filter(Boolean);
             const color = stringToColor(name).substring(1);
             const placeholderImgUrl = `https://placehold.co/800x400/${color}/FFFFFF?text=${encodeURIComponent(name)}&font=raleway`;
-            const eventDetails = generateEventDetailsHtml(item);
-
             modalContent.innerHTML = `
                 <div class="relative">
                     <button id="modal-close-btn" class="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-white rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors z-10">
@@ -402,10 +329,10 @@
                     <div class="w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4"><img src="${placeholderImgUrl}" alt="${name}" class="w-full h-full object-cover"></div>
                     <h3 class="font-bold text-xl sm:text-2xl">${name}</h3>
                     <p class="text-gray-500 mt-1">${item.address || item.district}</p>
-                    ${eventDetails}
+                    ${isEvent ? `<p class="text-sm text-blue-600 font-semibold mt-2">${item.start_date}${item.end_date && item.end_date !== item.start_date ? ' - ' + item.end_date : ''}</p>` : ''}
                     <div class="mt-4 pt-4 border-t flex flex-wrap gap-2">${senses.map(s => `<span class="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded-full">${s}</span>`).join('')}</div>
-                    <p class="text-gray-600 mt-4">${item.description || translations[currentLanguage].modal_no_desc}</p>
-                    <div class="mt-6"><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-gray-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors">${isEvent ? translations[currentLanguage].modal_go_event : translations[currentLanguage].modal_go_place}</a></div>
+                    <p class="text-gray-600 mt-4">${item.description || '暫無描述。'}</p>
+                    <div class="mt-6"><a href="${item.url}" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-gray-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors">${isEvent ? '前往活動網站' : '前往小店網站'}</a></div>
                 </div>
             `;
             modalBackdrop.classList.remove('hidden');
@@ -430,16 +357,9 @@
             });
         });
         modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
-        langSwitcher.addEventListener('click', e => {
-            e.preventDefault();
-            const lang = e.target.dataset.lang;
-            if (lang) {
-                switchLanguage(lang);
-            }
-        });
 
         // --- INITIALIZATION ---
-        switchLanguage('zh'); // Set default language
+        populateSenses();
         fetchData();
     </script>
 </body>
